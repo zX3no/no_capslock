@@ -1,9 +1,10 @@
+#![windows_subsystem = "windows"]
 use std::ptr::null_mut;
 use winapi::{
     shared::windef::HHOOK,
     um::winuser::{
         keybd_event, CallNextHookEx, DispatchMessageA, GetMessageA, SetWindowsHookExA,
-        TranslateMessage, UnhookWindowsHookEx, KBDLLHOOKSTRUCT, MSG, VK_CAPITAL, VK_ESCAPE,
+        TranslateMessage, UnhookWindowsHookEx, KBDLLHOOKSTRUCT, VK_CAPITAL, VK_ESCAPE,
         WH_KEYBOARD_LL, WM_KEYDOWN, WM_KEYUP,
     },
 };
@@ -11,7 +12,7 @@ use winapi::{
 fn main() {
     unsafe {
         let hook_id = SetWindowsHookExA(WH_KEYBOARD_LL, Some(hook_callback), null_mut(), 0);
-        let msg: *mut MSG = null_mut();
+        let msg = null_mut();
 
         while GetMessageA(msg, null_mut(), 0, 0) == 0 {
             TranslateMessage(msg);
